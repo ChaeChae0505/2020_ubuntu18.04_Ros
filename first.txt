@@ -1,0 +1,51 @@
+[참고] 
+https://gist.github.com/godori/355391c91d2f6725aee8f273f095e87c
+https://webdir.tistory.com/222
+https://yokang90.tistory.com/47
+
+천천히 보기
+https://evan-moon.github.io/2019/07/25/git-tutorial/
+
+
+리눅스나 터미널에 접속한다.
+git --version 을 입력해서 "이런 명령어는 없어여..!!" 라는 메시지가 뜨는지 확인
+sudo apt-get install update 로 업데이트하자.
+sudo apt-get install git 으로 깃을 설치하자. 패키지 관리자 없이 깃만 설치하겠음
+중간에 설치 동의에서 y를 눌러준 후 완료되면, git --version으로 버전이 뜨는지 확인하자
+사용
+먼저 사용자 이름을 지정하자 git config --global user.name "사용자이름" 특별히 결과가 뜨진 않는다.
+
+이메일도 지정하자 git config --global user.email "메일@주소.com" 이제 됐다. 이 작업은 처음 한 번만 해두면 편하다.
+
+이제 새 깃 저장소를 만들 것이다.
+
+적당한 곳에 디렉터리를 만들고 mkdir ~/mygit , 해당 디렉토리로 이동 cd mygit
+
+git init
+
+이 디렉토리는 이제 Git 으로 모든 활동이 추적된다
+
+git status 로 현재 깃 상태를 확인할 수 있다. 아직은 아무 결과가 없다
+
+vi hello.txt 파일을 하나 생성하자
+
+아무 내용이나 저장하고 나와서 git status를 실행하면 untracked file에 방금 만든 파일이 추가된 걸 알 수 있다!
+
+이제 이 파일을 깃의 관리 대상으로 추가 할것이다. 이 파일은 이제 항상 감시된다
+
+git add hello.txt 로 파일명을 add 한 후에 다시 git status를 치면 committed 되었다고 뜬다
+
+이 관심파일을 깃 저장소에 실제로 반영하기 위해서는 "커밋"을 해야 한다
+
+git commit -m "initial commit" -m "설명할 메시지" 의 형식으로 커밋을 한다
+
+깃 저장소에 hello.txt 파일이 "initial commit"이라는 작업으로 저장되었다
+
+이제 커밋이 완료되었다! +1앞으로 자주 반복하게 될 명령어는 git add "file name" 과 git commit -m "commit message" 이다!
+
+이제 내 로컬 저장소의 리파지토리를 http://www.github.com 에 업로드 해보자
+
+로컬과 원격 저장소 연결 ( + 연결 상태 확인) git remote add origin [https://github.com/username/myproject.git] git remote -v
+
+처음 푸시한다면 아래를 먼저 하자 git push -u origin master
+푸시 : 원격 저장소로 푸시 git push origin master
