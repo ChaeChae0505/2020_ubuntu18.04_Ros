@@ -5,6 +5,14 @@ https://yokang90.tistory.com/47
 
 천천히 보기
 https://evan-moon.github.io/2019/07/25/git-tutorial/
+https://evan-moon.github.io/2019/07/28/git-tutorial-advanced/
+
+
+git log 는 기록
+git add . : 모든 상태 local git 에 추가
+git commit -m "전송할 메시지" : 메세지 추가
+git push origin master
+
 
 
 리눅스나 터미널에 접속한다.

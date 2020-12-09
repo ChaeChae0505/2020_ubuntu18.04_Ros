@@ -1,0 +1,135 @@
+#!/usr/bin/env python
+
+import rospy
+import time
+import numpy as np
+import math as m
+import roslib; roslib.load_manifest('ur_driver')
+from std_msgs.msg import Header
+import joint_state_publisher
+import actionlib
+from control_msgs.msg import *
+from trajectory_msgs.msg import *
+from sensor_msgs.msg import JointState
+from math import pi
+
+class Listener():
+    def __init__(self):
+        self.jointstate = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        self.velocity = []
+        self.command = []
+        self.isReceived = False
+        rospy.init_node('joint_state_publisher', anonymous=True)
+        rospy.Subscriber('joint_states', JointState, self.callback1) #,"jointstate"
+#        print("joint", JointState)
+        rospy.Subscriber('command', JointState, self.callback2)
+        
+        # rospy.Subscriber("command",JointState,callback,"command")
+
+    def callback1(self, data): #,who
+        #print("name: ", who, "value: ", data.position)
+        #print(data.position)
+        #rospy.init_node('joint_state_sub', anonymous =True)
+        self.jointstate = data.position
+        self.velocity = data.velocity
+        self.isReceived1 = True
+        print "callback 1", self.jointstate
+        print "velocity", self.velocity
+        
+        print "data", data
+
+    def callback2(self, data):
+        self.velocity = data.velocity
+        self.command = data.position
+        self.isReceived2 = True
+        print(self.velocity)
+        print("callback 2")
+        return self.velocity, self.command
+
+
+
+    #def listen():
+        #rospy.init_node('sibal',anonymous=True)
+        #ospy.Subscriber("joint_states",JointState,callback) #,"jointstate"
+        # rospy.Subscriber("command",JointState,callback,"command")
+
+
+    def com(self, position, velocity):
+        pub = rospy.Publisher('joint_states', JointState, queue_size=10)
+        
+        Joint = JointState()
+        Joint.header.stamp = rospy.Time.now()
+        Joint.name = ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint',
+                   'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
+        Joint.position = position
+        Joint.velocity = velocity
+        ##Joint.velocity = [1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+       # Joint.effort = [0.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+        rate= rospy.Rate(125)
+        pub.publish(Joint)
+        rate.sleep()
+
+    def t1(self, t):
+        p = m.pow(t,2)-(2//9)*m.pow(t,3)
+        v = 2*t - 2*m.pow(t,2)//3
+        self.p1 = [p, 0.0, 0.0, 0.0, 0.0, 0.0]
+        print "v!!!!!!", v
+        self.p2 = [v, 0.0, 0.0, 0.0, 0.0, 0.0]
+      
+
+
+    def run(self):
+#        init_joint =[0.0, -pi/2, pi/2, -pi/2, -pi/2, 0.0]
+#        self.jointstate = init_joint
+#        init_velocity =[0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+#        self.velocity = init_velocity
+
+#        
+        
+            #while not rospy.is_shutdown():
+            for i in range(0,30):
+                j_s = np.array(self.jointstate)
+                cmd = np.array(self.p1)
+                vv = np.array(self.p2)            
+            #cmd = np.array(self.command)
+#            print(velocity)
+#            print(joint)
+                if len(cmd) is 6:
+                    j_s = cmd
+                else:
+                    j_s = j_s
+                self.com(j_s, vv)
+     
+##            for i in range(0,6):
+                #velocity[i]*0.008
+##                if len(cmd) is 6:
+##                    j_s[i] = cmd[i]
+
+##                else:
+##                    j_s[i] = j_s[i]
+##                print(j_s[i])
+##            self.com(j_s)
+#            joint = np.array(self.jointstate)
+#            velocity = np.array(self.velocity)
+#            print(joint)
+
+
+#            
+
+if __name__=='__main__':
+
+    
+    my = np.arange(0,3,0.01)
+    test = Listener()
+    for i in my:
+    
+        test.t1(i)
+        test.run()
+        rospy.Rate(10)
+        if rospy.is_shutdown():
+           break
+   # test.t1()
+   # test.run()
+ 
+
+
