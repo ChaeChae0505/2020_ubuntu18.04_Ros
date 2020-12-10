@@ -4,7 +4,7 @@
 #### 위에 내용을 확인 해보면 알겠지만 indigo 이상 부터는 gazebo empty_world를 실행할 때 다음과 같이 해야한다.
 
 
-#### [Catkin system](http://wiki.ros.org/catkin)
+### [Catkin system](http://wiki.ros.org/catkin)
 - catkin_make와 catkin build, catkin_make_isolated의 차이는 무엇인가
 ```
 If you have a previously compiled workspace and you add a new package inside it, you can tell catkin to add this new package to the already-compiled binaries by adding this parameter:
@@ -17,7 +17,7 @@ http://wiki.ros.org/ko/catkin/Tutorials/using_a_workspace
 
 
 
-##### 1. [catkin/CMakeLists.txt](http://wiki.ros.org/catkin/CMakeLists.txt)
+1. [catkin/CMakeLists.txt](http://wiki.ros.org/catkin/CMakeLists.txt)
 - 어떻게 build되는지 CMake build system 에 넣어주는 것
 ##### 구조
     1) Required CMake Version 
@@ -93,14 +93,14 @@ $ roslaunch gazebo_ros empty_world.launch
 ```
 - Gazebo roslaunch Arguments
 ```
-paused : start gazebo in a paused state (default false)
-use_sim_time : tells ROS nodes asking for time to get the Gazebo-pulished simulation time, published over the ROS topic/clock(default true)
-gui : Launch the user interface window of Gazebo (default true)
-headless (deprecated) recording (previously called headless) : Enable gazebo state log recording
-debug : Start gzserver (Gazebo Server) in debug mode using gdb (default false)
-verbose : Run gzserver and gzclient with --verbose, printing errors and warnings to the terminal (default false)
-server_required : Terminate launch script when gzserver (Gazebo Server) exits (default false)
-gui_required : Terminate launch script when gzclient (user interface window) exits (default false)
+- paused : start gazebo in a paused state (default false)
+- use_sim_time : tells ROS nodes asking for time to get the Gazebo-pulished simulation time, published over the ROS topic/clock(default true)
+- gui : Launch the user interface window of Gazebo (default true)
+- headless (deprecated) recording (previously called headless) : Enable gazebo state log recording
+- debug : Start gzserver (Gazebo Server) in debug mode using gdb (default false)
+- verbose : Run gzserver and gzclient with --verbose, printing errors and warnings to the terminal (default false)
+- server_required : Terminate launch script when gzserver (Gazebo Server) exits (default false)
+- gui_required : Terminate launch script when gzclient (user interface window) exits (default false)
 ```
 
 
@@ -170,11 +170,59 @@ gui_required : Terminate launch script when gzclient (user interface window) exi
         - use_tf_static (bool)
           : Set whether to use the /tf_static latched static transform broadcaster. Default: true.
 
->> fixed 조인트는 고정된 값이라 연관 관계 파악 가능 / 움직이는 조인트는 현재 값을 알 수 없음 >> joint_state_publisher 혹은 joing_state_publisher_gui 필요
+> fixed 조인트는 고정된 값이라 연관 관계 파악 가능 / 움직이는 조인트는 현재 값을 알 수 없음 >> joint_state_publisher 혹은 joing_state_publisher_gui 필요
 
 
 
 #### ros_control
+- 하드웨어를 ROS로 좀 더 쉽게 제어할 수 있도록 하기위한 툴?
+
+- 제공되는 컨트롤러 
+```
+effort_controllers - Command a desired force/torque to joints.
+	joint_effort_controller
+	joint_position_controller
+	joint_velocity_controller
+
+joint_state_controller - Read all joint positions.
+	joint_state_controller
+
+position_controllers - Set one or multiple joint positions at once.
+	joint_position_controller
+	joint_group_position_controller
+
+velocity_controllers - Set one or multiple joint velocities at once.
+	joint_velocity_controller
+	joint_group_velocity_controller
+ 
+joint_trajectory_controllers - Extra functionality for splining an entire trajectory.
+	position_controller
+	velocity_controller
+	effort_controller
+	position_velocity_controller
+	position_velocity_acceleration_controller
+
+```
+
+- 대응되는 하드웨어 인터페이스
+```
+Joint Command Interfaces
+	Effort Joint Interface
+	Velocity Joint Interface
+	Position Joint Interface
+
+Joint State Interfaces
+
+Actuator State Interfaces
+Actuator Command Interfaces
+	Effort Actuator Interface
+	Velocity Actuator Interface
+	Position Actuator Interface
+
+Force-torque sensor Interface
+IMU sensor Interface
+```
+
 
 
 
