@@ -1,10 +1,11 @@
-[Wiki gazebo tutorial](http://wiki.ros.org/simulator_gazebo/Tutorials/StartingGazebo) 
+[Wiki gazebo tutorial](http://wiki.ros.org/simulator_gazebo/Tutorials/StartingGazebo)
+
 [gazebo page](http://gazebosim.org/tutorials?tut=ros_roslaunch)
 #### 위에 내용을 확인 해보면 알겠지만 indigo 이상 부터는 gazebo empty_world를 실행할 때 다음과 같이 해야한다.
 
 
 #### [Catkin system](http://wiki.ros.org/catkin)
-        - catkin_make와 catkin build, catkin_make_isolated의 차이는 무엇인가
+- catkin_make와 catkin build, catkin_make_isolated의 차이는 무엇인가
 ```
 If you have a previously compiled workspace and you add a new package inside it, you can tell catkin to add this new package to the already-compiled binaries by adding this parameter:
 
@@ -16,7 +17,7 @@ http://wiki.ros.org/ko/catkin/Tutorials/using_a_workspace
 
 
 
-1. [catkin/CMakeLists.txt](http://wiki.ros.org/catkin/CMakeLists.txt)
+##### 1. [catkin/CMakeLists.txt](http://wiki.ros.org/catkin/CMakeLists.txt)
 - 어떻게 build되는지 CMake build system 에 넣어주는 것
 ##### 구조
     1) Required CMake Version 
@@ -51,6 +52,7 @@ http://wiki.ros.org/ko/catkin/Tutorials/using_a_workspace
 
 
 -------------------------------------------------------------
+
 ##### [rosdep](http://wiki.ros.org/rosdep)
 - rosdep update :  sudo 와 함께 쓰면 안됨 permission errors 발생! 나중에
 - rosdep install --from-paths src --ignore-src -r -y : 필요한데 없는 패키지 모두 설치 하는 거 
@@ -60,7 +62,7 @@ http://wiki.ros.org/ko/catkin/Tutorials/using_a_workspace
 
 ##### URDF 파일 만들기
 
-catkin 의존성에 gazebo 만 있으면 되는 건가
+- catkin 의존성에 gazebo 만 있으면 되는 건가
 
 
 
@@ -90,30 +92,35 @@ $ roslaunch gazebo_ros empty_world.launch
 <!-- respawn 계속 실행할 것인가?-->
 ```
 - Gazebo roslaunch Arguments
->>>> paused : start gazebo in a paused state (default false)
->>>> use_sim_time : tells ROS nodes asking for time to get the Gazebo-pulished simulation time, published over the ROS topic/clock(default true)
->>>> gui : Launch the user interface window of Gazebo (default true)
->>>> headless (deprecated) recording (previously called headless) : Enable gazebo state log recording
->>>> debug : Start gzserver (Gazebo Server) in debug mode using gdb (default false)
->>>> verbose : Run gzserver and gzclient with --verbose, printing errors and warnings to the terminal (default false)
->>>> server_required : Terminate launch script when gzserver (Gazebo Server) exits (default false)
->>>> gui_required : Terminate launch script when gzclient (user interface window) exits (default false)
+```
+paused : start gazebo in a paused state (default false)
+use_sim_time : tells ROS nodes asking for time to get the Gazebo-pulished simulation time, published over the ROS topic/clock(default true)
+gui : Launch the user interface window of Gazebo (default true)
+headless (deprecated) recording (previously called headless) : Enable gazebo state log recording
+debug : Start gzserver (Gazebo Server) in debug mode using gdb (default false)
+verbose : Run gzserver and gzclient with --verbose, printing errors and warnings to the terminal (default false)
+server_required : Terminate launch script when gzserver (Gazebo Server) exits (default false)
+gui_required : Terminate launch script when gzclient (user interface window) exits (default false)
+```
+
+
 
 ##### URDF파일을  > GAZEBO simulation 사용 시 해주어야할 일
 
 1. URDF 파일에 넣어 줄 부분
-
+```
 - <link></link> 에 <inertial></inertial> 관련 정보 꼭 추가 : 동역학 정보
 - 조인트를 움직이고 싶다면 <transmission></transmission> 관련 정보 꼭 추가 (추후 ros_control과 연동)
         [urdf/transmission](http://wiki.ros.org/urdf/XML/Transmission)
 - 용도별 Gazebo 플러그인 추가 <gazebo></gazebo>
         [gazebo plugin](http://gazebosim.org/tutorials?tut=ros_gzplugins)
 - (옵션) <joint></joint>에 <dynamics></dynamics> 및 기타 구문 추가
+```
 
 2. spawn_model 사용
-1) $ rosrun gazebo_ros spawn_model -file `rospack find MYROBOT_description`/urdf/MYROBOT.urdf -urdf -x 0 -y 0 -z 1 -model MYROBOT
+        1) $ rosrun gazebo_ros spawn_model -file `rospack find MYROBOT_description`/urdf/MYROBOT.urdf -urdf -x 0 -y 0 -z 1 -model MYROBOT
 
-2) launch 파일
+        2) launch 파일
 
 ```xml
 <lanch>
@@ -122,8 +129,9 @@ $ roslaunch gazebo_ros empty_world.launch
 <!-- -->
 
 ```
-
+```
 필요한 의존
+
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 0.1" respawn=성"false" output="screen" />
 
   <buildtool_depend>catkin</buildtool_depend>
@@ -140,6 +148,7 @@ $ roslaunch gazebo_ros empty_world.launch
   <exec_depend>ur_description</exec_depend>
 
 ```
+
 
 #### robot_state_publisher란?[출처](http://wiki.ros.org/robot_state_publisher)
 
